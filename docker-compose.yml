@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file: .env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  migrate:
+    image: olivier814/gestion_salaire:latest
+    command: python manage.py migrate
+    env_file: .env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    image: olivier814/gestion_salaire:latest
+    command: gunicorn gestion_salaire.wsgi:application --bind 0.0.0.0:8000 --workers 3
+    ports:
+      - "8000:8000"
+    env_file: .env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      db:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  postgres_data:

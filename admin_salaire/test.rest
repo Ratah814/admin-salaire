@@ -1,0 +1,22 @@
+POST http://localhost:8000/admin_salaire/employes/
+Content-Type: application/json
+
+{
+    "nom": "Akaza",
+    "salaire": 4000
+}
+
+###
+GET http://localhost:8000/admin_salaire/employes/
+
+###
+PUT http://localhost:8000/admin_salaire/employes/af655623-2c28-4acf-94ba-d34e2ab55119
+Content-Type: application/json
+
+{
+    "nom": "Simy Akaza",
+    "salaire": 10000
+}
+
+###
+DELETE http://localhost:8000/admin_salaire/employes/79c47585-a2f7-44f6-a8f9-957832cb3e50
