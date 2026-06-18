@@ -12,7 +12,7 @@ services:
     restart: always
 
   migrate:
-    image: olivier814/gestion_salaire:latest
+    build: .
     command: python manage.py migrate
     env_file: .env
     depends_on:
@@ -20,7 +20,7 @@ services:
         condition: service_healthy
 
   web:
-    image: olivier814/gestion_salaire:latest
+    build: .
     command: gunicorn gestion_salaire.wsgi:application --bind 0.0.0.0:8000 --workers 3
     ports:
       - "8000:8000"
